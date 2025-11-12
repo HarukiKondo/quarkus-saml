@@ -1,12 +1,22 @@
-<md:EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+<!-- SAML 2.0 エンティティディスクリプタ: SP (サービスプロバイダ) のメタデータ定義 -->
+<md:EntityDescriptor 
+    xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" 
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     entityID="https://tomas.stenlund.eu"
     ID="ID_3c5c07e7-a2c0-4f08-9374-c715dc4b0841">
-    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"
-        AuthnRequestsSigned="true" WantAssertionsSigned="true">
+    <!-- SP SSO ディスクリプタ: このサービスプロバイダの SAML 設定 -->
+    <!-- AuthnRequestsSigned="true": 認証リクエストに署名する -->
+    <!-- WantAssertionsSigned="true": 署名されたアサーションを要求する -->
+    <md:SPSSODescriptor 
+        protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"
+        AuthnRequestsSigned="true" 
+        WantAssertionsSigned="true">
+        <!-- 署名用の鍵ディスクリプタ: SAML リクエストの署名に使用 -->
+        <!-- 署名鍵はSP側で生成保管する -->
         <md:KeyDescriptor use="signing">
-        
+            <!-- 署名用の X.509 証明書 (公開鍵) -->
             <ds:KeyInfo>
                 <ds:X509Data>
                     <ds:X509Certificate>
@@ -41,8 +51,10 @@
                 </ds:X509Data>
             </ds:KeyInfo>
         </md:KeyDescriptor>
-        
+        <!-- 暗号化用の鍵ディスクリプタ: IDP からのアサーションの暗号化に使用 -->
+        <!-- 秘密鍵はSP側で生成保管する -->
         <md:KeyDescriptor use="encryption">
+            <!-- 暗号化用の X.509 証明書 (公開鍵) -->
             <ds:KeyInfo>
                 <ds:X509Data>
                     <ds:X509Certificate>
@@ -77,12 +89,19 @@
                 </ds:X509Data>
             </ds:KeyInfo>
         </md:KeyDescriptor>
-        
-        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
-
-        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        <!-- NameID フォーマット: 永続的な識別子を使用 -->
+        <md:NameIDFormat>
+            urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+        </md:NameIDFormat>
+        <!-- アサーションコンシューマサービス: IDP からの SAML レスポンスを受け取るエンドポイント -->
+        <!-- Binding: HTTP-POST バインディングを使用 -->
+        <!-- Location: SAML レスポンスを受け取る URL -->
+        <!-- isDefault: このエンドポイントをデフォルトとして使用 -->
+        <!-- index: エンドポイントのインデックス番号 -->
+        <md:AssertionConsumerService 
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
             Location="http://localhost:8080/SAML2/assert"
-            isDefault="true" index="1"></md:AssertionConsumerService>
-
+            isDefault="true" index="1">
+        </md:AssertionConsumerService>
     </md:SPSSODescriptor>
 </md:EntityDescriptor>
