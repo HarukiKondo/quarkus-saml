@@ -16,35 +16,47 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 
+/**
+ * CountryResource クラス
+ * /countries エンドポイントの処理を実装
+ */
 @Path("/countries")
 @RequestScoped
 public class CountryResource {
-
+	// 変数の設定
     private Set<Country> countries = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+	// ロガーの設定
 	private static final Logger log = Logger.getLogger("CountryResource");
-
+	
     @Inject
     public SecurityIdentity securityIdentity;
 
     @Inject public JsonWebToken jwt;
 
+	/**
+	 * サンプル用にCountryデータを2つ追加
+	 */ 
     public CountryResource() {
         countries.add(new Country("Sweden", "Konungariket Sverige"));
         countries.add(new Country("Norge", "Konugariket Norge"));
     }
 
+	/**
+	 * GETメソッドでアクセスした場合は認証していないとアクセスできないようにする
+	 */
     @Authenticated
     @GET
     @Path("closed")
     public Set<Country> closed() {
-
+		// アイデンティティを取得する
         Principal identity = securityIdentity.getPrincipal();
+		// 認証済みどうかをチェックする
         if (securityIdentity.isAnonymous()) {
             log.info ("SecurityIdentity: Anonymous");
         } else {
             log.info ("SecurityIdentity: Name = " + identity.getName());
         }
-
+		// JWTのデータを取得
         log.info ("JWT Subject = " + jwt.getSubject());
         log.info ("JWT Issuer = " + jwt.getIssuer());
         if (jwt.getAudience() != null)
@@ -55,6 +67,9 @@ public class CountryResource {
         return countries;
     }
 
+	/**
+	 * 全員に開放しているメソッド
+	 */
     @PermitAll
     @GET
     @Path("open")
