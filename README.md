@@ -1,20 +1,18 @@
-# OpenSAML 5 and Quarkus
+# OpenSAML 5 と Quarkus
 
-This is a simple project to demonstrate the use of OpenSAML 5 and Quarkus that demonstrates how to
-log in a user using SAML together with Quarkus security.
+これは、OpenSAML 5 と Quarkus の使用方法を示すシンプルなプロジェクトで、Quarkus のセキュリティと組み合わせて SAML を使用したユーザーログインの方法を実演します。
 
+OpenSAML5 は Jakarta ベースで、Quarkus の WebServlet アノテーションと非常によく連携します。
 
-OpenSAML5 is jakarta based and works very well with Quarkus WebServlet annotation.
+- ログインエンドポイント: http://localhost:8080/SAML2/login
+- アサートエンドポイント: http://localhost:8080/SAML2/assert
+- オープンエンドポイント: http://localhost:8080/countries/open
+- 保護されたエンドポイント: http://localhost:8080/countries/closed
 
+## 開発モードでアプリケーションを実行する
 
-* Login endpoint is http://localhost:8080/SAML2/login
-* Assert endpoint is http://localhost:8080/SAML2/assert
-* Open endpoint is http://localhost:8080/countries/open
-* Protected endpoint http://localhost:8080/countries/closed
+以下のコマンドを使用して、開発モードでアプリケーションを実行できます:
 
-## Running the application in dev mode
-
-You can run your application in dev mode using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
